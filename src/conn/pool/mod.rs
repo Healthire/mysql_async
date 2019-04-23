@@ -103,6 +103,31 @@ impl Pool {
         Ok(Pool::new(opts))
     }
 
+    /// returns the number of new connections
+    pub fn new_count(&self) -> usize {
+        self.with_inner(|inner| inner.new.len())
+    }
+
+    /// returns the number of idle connections
+    pub fn idle_count(&self) -> usize {
+        self.with_inner(|inner| inner.idle.len())
+    }
+
+    /// returns the number of queued connection cleanups
+    pub fn queue_count(&self) -> usize {
+        self.with_inner(|inner| inner.queue.len())
+    }
+
+    /// returns the number of ongoing connections
+    pub fn ongoing_count(&self) -> usize {
+        self.with_inner(|inner| inner.ongoing)
+    }
+
+    /// returns the number of queued tasks
+    pub fn tasks_count(&self) -> usize {
+        self.with_inner(|inner| inner.tasks.len())
+    }
+
     /// Returns future that resolves to `Conn`.
     pub fn get_conn(&self) -> GetConn {
         new_get_conn(self)
